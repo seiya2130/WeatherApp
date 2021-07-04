@@ -9,6 +9,7 @@
 <body>
   <input type="text" id="appId">
   <button id="getWeatherButton">取得</button>
+  <input type="text" id="placeId">
 </body>
 </html>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
@@ -16,10 +17,12 @@
 
 //天気取得
 const appIdInputForm = $("#appId");
+const placeIdInputForm = $("#placeId");
 
 $("#getWeatherButton").on('click', function(){
   let appId = appIdInputForm.val();
-  $.get(`http://api.openweathermap.org/data/2.5/weather?id=1850147&appid=${appId}`).done(function(data) {
+  let placeId = placeIdInputForm.val();
+  $.get(`http://api.openweathermap.org/data/2.5/weather?id=${placeId}&appid=${appId}`).done(function(data) {
     console.log( data );
   })
 })
