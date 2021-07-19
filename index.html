@@ -17,7 +17,9 @@
   <div>
     <div id="area"></div>
     <div id="date"></div>
-    <div id="weather"></div>
+    <div id="weather">
+      <img src="" alt="">
+    </div>
   </div>
   
 </body>
@@ -52,6 +54,10 @@ $("#getWeatherButton").on('click', function(){
     const day = today.getDate();
 
     $("#date").text(`${year}/${month}/${day}`);
+
+    const weatherIcon = weatherJson.weather[0].icon;
+    const weatherIconImageURL = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+    $("#weather > img").attr("src", weatherIconImageURL);
   })
 })
 
