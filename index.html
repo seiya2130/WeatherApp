@@ -12,6 +12,8 @@
     <button id="getWeatherButton">取得</button>
     <select name="" id="placeId">
       <option value="1850147" selected>東京</option>
+      <option value="1856057">名古屋</option>
+      <option value="1853908">大阪</option>
     </select>
   </div>
   <div id="result"> 
@@ -21,7 +23,6 @@
       <img src="" alt="">
     </div>
   </div>
-  
 </body>
 </html>
 <style>
@@ -35,7 +36,9 @@
 
 let weatherJson;
 const japaneseAreaName = [
-  {name: "Tokyo", japanName: "東京"}
+  {name: "Tokyo", japanName: "東京"},
+  {name: "Nagoya", japanName: "名古屋"},
+  {name: "Osaka", japanName: "大阪"}
 ]
 
 const appIdInputForm = $("#appId");
@@ -44,6 +47,9 @@ const placeIdInputForm = $("#placeId");
 $("#getWeatherButton").on('click', function(){
   const appId = appIdInputForm.val();
   const placeId = placeIdInputForm.val();
+
+  $("#result > *").css('display', 'none');
+
   $.get(`http://api.openweathermap.org/data/2.5/weather?id=${placeId}&appid=${appId}`).done(function(data) {
     console.log(data);
     weatherJson = data;
