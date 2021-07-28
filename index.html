@@ -17,7 +17,7 @@
     </select>
   </div>
   <div id="result"> 
-    <div id="area"></div>
+    <div id="place"></div>
     <div id="date"></div>
     <div id="weather">
       <img src="" alt="">
@@ -26,6 +26,7 @@
 </body>
 </html>
 <style>
+
 #result > *{
   display: none;
 }
@@ -41,41 +42,59 @@ const japaneseAreaName = [
   {name: "Osaka", japanName: "大阪"}
 ]
 
-const appIdInputForm = $("#appId");
-const placeIdInputForm = $("#placeId");
+const appIdForm = $("#appId");
+const placeIdForm = $("#placeId");
 
-$("#getWeatherButton").on('click', function(){
-  const appId = appIdInputForm.val();
-  const placeId = placeIdInputForm.val();
+const placeArea = $("#place")
+const dateArea = $("#date")
+const weatherArea = $("#weather")
 
-  $("#result > *").css('display', 'none');
-
-  $.get(`http://api.openweathermap.org/data/2.5/weather?id=${placeId}&appid=${appId}`).done(function(data) {
-    console.log(data);
-    weatherJson = data;
-    const areaName = $.grep(japaneseAreaName, function(a){
-      if(weatherJson.name === a.name){
-        return a.japanName;
-      }
-    })[0]
-    $("#area").text(areaName.japanName);
-    
+function displayTodayDate(){
     const today = new Date();
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
     const day = today.getDate();
+    dateArea.text(`${year}/${month}/${day}`);
+}
 
-    $("#date").text(`${year}/${month}/${day}`);
+function displaySelectedPlaceName(){
+  const areaName = $.grep(japaneseAreaName, function(a){
+      if(weatherJson.name === a.name){
+        return a.japanName;
+      }
+    })[0]
+    placeArea.text(areaName.japanName);
+}
 
-    const weatherIcon = weatherJson.weather[0].icon;
+function displayWeatherIcon(){
+  const weatherIcon = weatherJson.weather[0].icon;
     const weatherIconImageURL = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
     $("#weather > img").attr("src", weatherIconImageURL);
+}
 
-    $("#area").fadeIn();
-    $("#date").fadeIn();
-    $("#weather").fadeIn();
+function animateDisplayTarget(){
+    placeArea.fadeIn();
+    dateArea.fadeIn();
+    weatherArea.fadeIn();
+}
 
+
+$("#getWeatherButton").on('click', function(){
+  const appId = appIdForm.val();
+  const placeId = placeIdForm.val();
+
+  $("#result > *").css('display', 'none');
+
+  $.get(`http://api.openweathermap.org/data/2.5/weather?id=${placeId}&appid=${appId}`).done(function(data) {
+    
+    weatherJson = data;
+
+    displaySelectedPlaceName();
+    displayTodayDate();
+    displayWeatherIcon();
+    animateDisplayTarget()
   })
 })
+
 
 </script>
